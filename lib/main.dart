@@ -1,12 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-
 void main() {
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,10 +18,31 @@ class MyApp extends StatelessWidget {
         ),
         body: ListView(
           children: [
-            Task('Aprender Flutter!!!'),
-            Task('Andar de Bike'),
-            Task('Meditar'),
-            Task('Ir para o intervalo'),
+            Task(
+                'Aprender Flutter no intervalo do curso!',
+                'https://pbs.twimg.com/media/Eu7m692XIAEvxxP?format=png',
+                2
+            ),
+            Task(
+                'Andar de Bike',
+                'https://tswbike.com/wp-content/uploads/2020/09/108034687_626160478000800_2490880540739582681_n-e1600200953343.jpg',
+                5
+            ),
+            Task(
+                'Meditar',
+                'https://manhattanmentalhealthcounseling.com/wp-content/uploads/2019/06/Top-5-Scientific-Findings-on-MeditationMindfulness-881x710.jpeg',
+                1
+            ),
+            Task(
+                'Ler',
+                'https://thebogotapost.com/wp-content/uploads/2017/06/636052464065850579-137719760_flyer-image-1.jpg',
+                3
+            ),
+            Task(
+                'Jogar',
+                'https://i.ibb.co/tB29PZB/kako-epifania-2022-2-c-pia.jpg',
+                4
+            ),
           ],
         ),
         floatingActionButton: FloatingActionButton(onPressed: () {}),
@@ -31,19 +50,17 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 class Task extends StatefulWidget {
   final String nome;
-
-  const Task(this.nome, {Key? key}) : super(key: key);
-
+  final String foto;
+  final int dificuldade;
+  const Task(this.nome, this.foto, this.dificuldade, {Key? key})
+      : super(key: key);
   @override
   State<Task> createState() => _TaskState();
 }
-
 class _TaskState extends State<Task> {
   int nivel = 0;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -67,25 +84,86 @@ class _TaskState extends State<Task> {
                         color: Colors.black26,
                         width: 80,
                         height: 100,
-                      ),
-                      Container(
-                        width: 200,
-                        child: Text(
-                          widget.nome,
-                          style: TextStyle(
-                            fontSize: 24,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                        child: Image.network(
+                          widget.foto,
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            nivel++;
-                          });
-                          print(nivel);
-                        },
-                        child: Icon(Icons.arrow_drop_up),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 200,
+                            child: Text(
+                              widget.nome,
+                              style: TextStyle(
+                                fontSize: 24,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Icon(Icons.star,
+                                  size: 15,
+                                  color: (widget.dificuldade >= 1)
+                                      ? Colors.blue
+                                      : Colors.blue[100]),
+                              Icon(
+                                Icons.star,
+                                size: 15,
+                                color: (widget.dificuldade >= 2)
+                                    ? Colors.blue
+                                    : Colors.blue[100],
+                              ),
+                              Icon(
+                                Icons.star,
+                                size: 15,
+                                color: (widget.dificuldade >= 3)
+                                    ? Colors.blue
+                                    : Colors.blue[100],
+                              ),
+                              Icon(
+                                Icons.star,
+                                size: 15,
+                                color: (widget.dificuldade >= 4)
+                                    ? Colors.blue
+                                    : Colors.blue[100],
+                              ),
+                              Icon(
+                                Icons.star,
+                                size: 15,
+                                color: (widget.dificuldade >= 5)
+                                    ? Colors.blue
+                                    : Colors.blue[100],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      Container(
+                        height: 52,
+                        width: 82,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              nivel++;
+                            });
+                            print(nivel);
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Icon(Icons.arrow_drop_up),
+                              Text(
+                                'Lvl Up',
+                                style: TextStyle(fontSize: 12),
+                              )
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -98,7 +176,9 @@ class _TaskState extends State<Task> {
                       Container(
                         child: LinearProgressIndicator(
                           color: Colors.white,
-                          value: nivel / 10,
+                          value: (widget.dificuldade > 0)
+                              ? (nivel / widget.dificuldade) / 10
+                              : 1,
                         ),
                         width: 200,
                       ),
