@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         ),
         body: ListView(
           children: [
-            Task('Aprender Flutter!'),
+            Task('Aprender Flutter!!!'),
             Task('Andar de Bike'),
             Task('Meditar'),
             Task('Ir para o intervalo'),
