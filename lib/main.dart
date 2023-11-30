@@ -1,10 +1,20 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+   MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool opacidade = true;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,37 +25,49 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: Text('Tarefas'),
+          leading: Icon(Icons.add_task),
         ),
-        body: ListView(
-          children: [
-            Task(
-                'Aprender Flutter no intervalo do curso!',
-                'https://pbs.twimg.com/media/Eu7m692XIAEvxxP?format=png',
-                2
-            ),
-            Task(
-                'Andar de Bike',
-                'https://tswbike.com/wp-content/uploads/2020/09/108034687_626160478000800_2490880540739582681_n-e1600200953343.jpg',
-                5
-            ),
-            Task(
-                'Meditar',
-                'https://manhattanmentalhealthcounseling.com/wp-content/uploads/2019/06/Top-5-Scientific-Findings-on-MeditationMindfulness-881x710.jpeg',
-                1
-            ),
-            Task(
-                'Ler',
-                'https://thebogotapost.com/wp-content/uploads/2017/06/636052464065850579-137719760_flyer-image-1.jpg',
-                3
-            ),
-            Task(
-                'Jogar',
-                'https://i.ibb.co/tB29PZB/kako-epifania-2022-2-c-pia.jpg',
-                4
-            ),
-          ],
+        body: AnimatedOpacity(
+          opacity: opacidade ? 1.0 : 0.0,
+          duration:Duration(seconds: 1) ,
+          child: ListView(
+            children: [
+              Task(
+                  'Aprender Flutter no intervalo do curso!',
+                  'https://hotmart.s3.amazonaws.com/product_pictures/d945a760-0964-4880-9b75-97f6cafb04bd/ADFLogohotmart.png',
+                  2
+              ),
+              Task(
+                  'Andar de Bike',
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNrb3ihcYzeiSdKb-AqOjnmkkkNt2fg4ODCHNYa5IzY5gHDIKViVfcwMWfyfbdwYIorig&usqp=CAU',
+                  5
+              ),
+              Task(
+                  'Meditar',
+                  'https://manhattanmentalhealthcounseling.com/wp-content/uploads/2019/06/Top-5-Scientific-Findings-on-MeditationMindfulness-881x710.jpeg',
+                  1
+              ),
+              Task(
+                  'Ler',
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvbM1r4P3AkveqpDisR7ISPCgo69YNQtILqw&usqp=CAU',
+                  3
+              ),
+              Task(
+                  'Jogar',
+                  'https://i.ibb.co/tB29PZB/kako-epifania-2022-2-c-pia.jpg',
+                  4
+              ),
+            ],
+          ),
         ),
-        floatingActionButton: FloatingActionButton(onPressed: () {}),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              setState(() {
+                opacidade = !opacidade;
+              });
+        },
+        child: Icon(Icons.remove_red_eye),
+        ),
       ),
     );
   }
@@ -69,24 +91,36 @@ class _TaskState extends State<Task> {
         child: Stack(
           children: [
             Container(
-              color: Colors.blue,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                color: Colors.blue,
+              ),
               height: 140,
             ),
             Column(
               children: [
                 Container(
-                  color: Colors.white,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: Colors.white,
+                  ),
                   height: 100,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        color: Colors.black26,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: Colors.black26,
+                        ),
                         width: 80,
                         height: 100,
-                        child: Image.network(
-                          widget.foto,
-                          fit: BoxFit.cover,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: Image.network(
+                            widget.foto,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       Column(
