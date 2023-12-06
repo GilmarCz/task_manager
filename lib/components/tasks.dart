@@ -11,9 +11,38 @@ class Task extends StatefulWidget {
   State<Task> createState() => _TaskState();
 }
 class _TaskState extends State<Task> {
+
+  final Map<int, Color> masteryColors = {
+    1: Colors.lightBlueAccent,
+    2: Colors.green,
+    3: Colors.yellow,
+    4: Colors.orange,
+    5: Colors.red,
+  };
+
   int nivel = 0;
+
   @override
   Widget build(BuildContext context) {
+    bool reachedMaxMastery = nivel >= widget.dificuldade;
+    bool reachedMinLevelForColorChange = nivel >= 10;
+
+    Color taskColor = reachedMaxMastery
+        ? (reachedMinLevelForColorChange
+        ? masteryColors[widget.dificuldade] ?? Colors.grey
+        : Colors.blue)
+        : Colors.blue;
+
+    Color textColor = reachedMaxMastery && reachedMinLevelForColorChange
+        ? masteryColors[widget.dificuldade] != null
+        ? ThemeData.estimateBrightnessForColor(
+        masteryColors[widget.dificuldade]!) ==
+        Brightness.light
+        ? Colors.black
+        : Colors.white
+        : Colors.white
+        : Colors.white;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Stack(
@@ -21,7 +50,7 @@ class _TaskState extends State<Task> {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
-              color: Colors.blue,
+              color: taskColor,
             ),
             height: 140,
           ),
@@ -65,7 +94,6 @@ class _TaskState extends State<Task> {
                             ),
                           ),
                         ),
-                        // TASK ANTERIORMENTE
                         Difficulty(widget.dificuldade),
                       ],
                     ),
@@ -77,7 +105,6 @@ class _TaskState extends State<Task> {
                           setState(() {
                             nivel++;
                           });
-                          //print(nivel);
                         },
                         child: const Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -104,15 +131,16 @@ class _TaskState extends State<Task> {
                       width: 200,
                       child: LinearProgressIndicator(
                         color: Colors.white,
-                        value: (widget.dificuldade > 0)
+                        value: (widget.dificuldade > 0 &&
+                            nivel <= widget.dificuldade)
                             ? (nivel / widget.dificuldade) / 10
                             : 1,
                       ),
                     ),
                     Text(
                       'Nível: $nivel',
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: textColor,
                         fontSize: 16,
                       ),
                     ),
