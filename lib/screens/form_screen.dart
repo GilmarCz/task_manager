@@ -8,7 +8,6 @@ class FormScreen extends StatefulWidget {
 }
 
 class _FormScreenState extends State<FormScreen> {
-
   TextEditingController nameController = TextEditingController();
   TextEditingController difficultyController = TextEditingController();
   TextEditingController imageController = TextEditingController();
@@ -24,10 +23,9 @@ class _FormScreenState extends State<FormScreen> {
           height: 650,
           width: 400,
           decoration: BoxDecoration(
-            color: Colors.black12,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(width: 3)
-          ),
+              color: Colors.black12,
+              borderRadius: BorderRadius.circular(05),
+              border: Border.all(width: 3)),
           child: Column(
             children: [
               Padding(
@@ -35,7 +33,7 @@ class _FormScreenState extends State<FormScreen> {
                 child: TextFormField(
                   controller: nameController,
                   textAlign: TextAlign.center,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Nome',
                     fillColor: Colors.white70,
@@ -48,7 +46,7 @@ class _FormScreenState extends State<FormScreen> {
                 child: TextFormField(
                   controller: difficultyController,
                   textAlign: TextAlign.center,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Dificuldade',
                     fillColor: Colors.white70,
@@ -59,9 +57,12 @@ class _FormScreenState extends State<FormScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  onChanged: (Text) {
+                    setState(() {});
+                  },
                   controller: imageController,
                   textAlign: TextAlign.center,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Imagem',
                     fillColor: Colors.white70,
@@ -69,13 +70,34 @@ class _FormScreenState extends State<FormScreen> {
                   ),
                 ),
               ),
-              ElevatedButton(onPressed: (){
-                print(nameController.text);
-                print(int.parse(difficultyController.text));
-                print(imageController.text);
-              },
-                  child: const Text('Adicionar!'),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                    height: 60,
+                    width: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(180),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        imageController.text,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset('assets/images/nophoto.png');
+                        },
+                        fit: BoxFit.cover,
+                      ),
+                    )),
               ),
+              ElevatedButton(
+                onPressed: () {
+                  print(nameController.text);
+                  print(int.parse(difficultyController.text));
+                  print(imageController.text);
+                },
+                child: Text('Adicionar!'),
+              )
             ],
           ),
         ),
@@ -83,4 +105,3 @@ class _FormScreenState extends State<FormScreen> {
     );
   }
 }
-
