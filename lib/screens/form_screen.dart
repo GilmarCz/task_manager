@@ -1,3 +1,8 @@
+// ignore: duplicate_ignore
+// ignore_for_file: av, duplicate_ignoreoid_types_as_parameter_names, non_constant_identifier_names, avoid_print
+
+// ignore_for_file: avoid_types_as_parameter_names
+
 import 'package:flutter/material.dart';
 
 class FormScreen extends StatefulWidget {
@@ -124,6 +129,19 @@ class _FormScreenState extends State<FormScreen> {
                         print(nameController.text);
                         print(int.parse(difficultyController.text));
                         print(imageController.text);
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Printando nova Tarefa'),
+                          ),
+                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => const FormScreen(),
+                        //   ),
+                        // );
+                        Navigator.pop(context);
                       }
                     },
                     child: const Text('Adicionar!'),
