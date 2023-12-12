@@ -5,8 +5,10 @@ class Task extends StatefulWidget {
   final String name;
   final String photo;
   final int difficulty;
-  const Task(this.name, this.photo, this.difficulty, {Key? key})
+  Task(this.name, this.photo, this.difficulty, {Key? key})
       : super(key: key);
+  int nivel = 0;
+
   @override
   State<Task> createState() => _TaskState();
 }
@@ -20,7 +22,7 @@ class _TaskState extends State<Task> {
     5: Colors.red,
   };
 
-  int nivel = 0;
+
 
   bool assetOrNetwork(){
     if(widget.photo.contains('http')) {
@@ -31,8 +33,8 @@ class _TaskState extends State<Task> {
 
   @override
   Widget build(BuildContext context) {
-    bool reachedMaxMastery = nivel >= widget.difficulty;
-    bool reachedMinLevelForColorChange = nivel >= 10;
+    bool reachedMaxMastery = widget.nivel >= widget.difficulty;
+    bool reachedMinLevelForColorChange = widget.nivel >= 10;
 
     Color taskColor = reachedMaxMastery
         ? (reachedMinLevelForColorChange
@@ -115,7 +117,7 @@ class _TaskState extends State<Task> {
                       child: ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            nivel++;
+                            widget.nivel++;
                           });
                         },
                         child: const Column(
@@ -144,13 +146,13 @@ class _TaskState extends State<Task> {
                       child: LinearProgressIndicator(
                         color: Colors.white,
                         value: (widget.difficulty > 0 &&
-                            nivel <= widget.difficulty)
-                            ? (nivel / widget.difficulty) / 10
+                            widget.nivel <= widget.difficulty)
+                            ? (widget.nivel / widget.difficulty) / 10
                             : 1,
                       ),
                     ),
                     Text(
-                      'Nível: $nivel',
+                      'Nível: ${widget.nivel}',
                       style: TextStyle(
                         color: textColor,
                         fontSize: 16,

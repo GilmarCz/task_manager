@@ -1,8 +1,3 @@
-// ignore: duplicate_ignore
-// ignore_for_file: av, duplicate_ignoreoid_types_as_parameter_names, non_constant_identifier_names, avoid_print
-
-// ignore_for_file: avoid_types_as_parameter_names
-
 import 'package:flutter/material.dart';
 //import 'package:task_manager/components/tasks.dart';
 import 'package:task_manager/data/task_inherited.dart';
@@ -22,6 +17,20 @@ class _FormScreenState extends State<FormScreen> {
   TextEditingController imageController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  bool valueValidator(String? value) {
+    if(value != null && value.isEmpty){
+      return true;
+    }
+    return false;
+  }
+
+  bool difficultyValidator (String? value) {
+    if(value!.isEmpty || int.parse(value) > 5 || int.parse(value) < 1) {
+      return true;
+      }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +57,7 @@ class _FormScreenState extends State<FormScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       validator: (String? value){
-                        if(value != null && value.isEmpty){
+                        if(valueValidator(value)){
                           return 'Insira o nome da Tarefa';
                         }
                         return null;
@@ -67,7 +76,7 @@ class _FormScreenState extends State<FormScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       validator: (value){
-                        if(value!.isEmpty || int.parse(value) > 5 || int.parse(value) < 1){
+                        if(difficultyValidator(value)){
                           return 'Insira uma Dificuldade entre 1 e 5';
                         }
                         return null;
@@ -133,12 +142,12 @@ class _FormScreenState extends State<FormScreen> {
                         //print(nameController.text);
                         //print(int.parse(difficultyController.text));
                         //print(imageController.text);
-                        TaskInherited.of(context).newTask(
+                        TaskInherited.of(widget.taskContext).newTask(
                             nameController.text,
                             imageController.text,
                             int.parse(difficultyController.text),
                         );
-                        ScaffoldMessenger.of(widget.taskContext).showSnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Criando uma nova Tarefa!'),
                           ),
